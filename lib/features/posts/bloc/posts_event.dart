@@ -1,4 +1,6 @@
 part of 'posts_bloc.dart';
 
 @immutable
-class PostsEvent {}
+abstract class PostsEvent {}
+
+class PostsInitialFetchEvent extends PostsEvent {}
