@@ -6,8 +6,8 @@ import 'package:http/http.dart' as http;
 
 class PostRepo {
   static Future<List<PostDataUiModel>> fetchPosts() async {
+    var client = http.Client();
     try {
-      var client = http.Client();
       List<PostDataUiModel> posts = [];
       var response = await client
           .get(Uri.parse('https://jsonplaceholder.typicode.com/posts'));
@@ -24,6 +24,27 @@ class PostRepo {
     } catch (e) {
       log(e.toString());
       return [];
+    }
+  }
+
+  static Future<bool> addPosts() async {
+    var client = http.Client();
+    try {
+      var response = await client
+          .post(Uri.parse('https://jsonplaceholder.typicode.com/posts'), body: {
+        "title": "Utsav Bhattarai",
+        "body": "Utsav is a good boy",
+        "userId": "23",
+      });
+
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      log(e.toString());
+      return false;
     }
   }
 }

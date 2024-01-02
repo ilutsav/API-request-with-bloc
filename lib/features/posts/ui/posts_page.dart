@@ -24,6 +24,12 @@ class _PostsPageState extends State<PostsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Posts Page')),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          postsBloc.add(PostAddEvent());
+        },
+        child: Icon(Icons.add),
+      ),
       body: BlocConsumer<PostsBloc, PostsState>(
           bloc: postsBloc,
           listenWhen: (previous, current) => current is PostActionState,
