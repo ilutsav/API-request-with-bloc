@@ -1,17 +1,10 @@
 import 'dart:convert';
 
-List<PostDataUiModel> postFromJson(String str) => List<PostDataUiModel>.from(
-    json.decode(str).map((x) => PostDataUiModel.fromJson(x)));
-
-String postToJson(List<PostDataUiModel> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
 class PostDataUiModel {
   final int userId;
   final int id;
   final String title;
   final String body;
-
   PostDataUiModel({
     required this.userId,
     required this.id,
@@ -19,18 +12,26 @@ class PostDataUiModel {
     required this.body,
   });
 
-  factory PostDataUiModel.fromJson(Map<String, dynamic> json) =>
-      PostDataUiModel(
-        userId: json["userId"],
-        id: json["id"],
-        title: json["title"],
-        body: json["body"],
-      );
+  Map<String, dynamic> toMap() {
+    return {
+      'userId': userId,
+      'id': id,
+      'title': title,
+      'body': body,
+    };
+  }
 
-  Map<String, dynamic> toJson() => {
-        "userId": userId,
-        "id": id,
-        "title": title,
-        "body": body,
-      };
+  factory PostDataUiModel.fromMap(Map<String, dynamic> map) {
+    return PostDataUiModel(
+      userId: map['userId']?.toInt() ?? 0,
+      id: map['id']?.toInt() ?? 0,
+      title: map['title'] ?? '',
+      body: map['body'] ?? '',
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory PostDataUiModel.fromJson(String source) =>
+      PostDataUiModel.fromMap(json.decode(source));
 }

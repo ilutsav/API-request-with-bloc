@@ -1,7 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
+import 'package:api_with_bloc/features/posts/model/post_data_ui_model.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
+
+import '../repos/posts_repo.dart';
 
 part 'posts_event.dart';
 part 'posts_state.dart';
@@ -12,7 +17,10 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
   }
 
   FutureOr<void> postsInitialFetchEvent(
-      PostsInitialFetchEvent event, Emitter<PostsState> emit) async{
-        var client = 
-      }
+      PostsInitialFetchEvent event, Emitter<PostsState> emit) async {
+    emit(PostFetchingLoadingState());
+    List<PostDataUiModel> posts = await PostRepo.fetchPosts();
+
+    emit(PostFetchingSuccessfulState(posts: posts));
+  }
 }
